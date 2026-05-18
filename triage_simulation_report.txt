@@ -2,7 +2,7 @@
             LIFELINE: HOSPITAL EMERGENCY TRIAGE SIMULATION FINAL REPORT
 ==========================================================================================
 
-Generated at: 2026-05-18 12:43:05
+Generated at: 2026-05-18 14:52:51
 
 1. ORIGINAL SAMPLE PATIENTS DATASET
 ------------------------------------------------------------------------------------------
@@ -25,22 +25,26 @@ P014   | Rekha Pandey       | 55  | Severity.CRITICAL | 100.0  | 1       | 18   
 P015   | Harish Venkat      | 80  | Severity.CRITICAL | 100.0  | 0       | 30    | 48bpm/80/80%          
 P016   | P B TEJAS          | 18  | Severity.HIGH | 83.0   | 0       | 15    | 90bpm/100/90%         
 P017   | Satish             | 18  | Severity.CRITICAL | 86.0   | 0       | 15    | 95bpm/100/90%         
+P018   | Sakshiii           | 19  | Severity.MEDIUM | 62.0   | 0       | 25    | 70bpm/150/94%         
+P019   | Revannn            | 20  | Severity.MEDIUM | 62.0   | 0       | 41    | 95bpm/100/91%         
+P020   | Aditya             | 20  | Severity.HIGH | 68.0   | 0       | 10    | 90bpm/100/90%         
+P021   | Aditya             | 20  | Severity.HIGH | 68.0   | 0       | 10    | 90bpm/100/90%         
 
 2. DAA SORTING ALGORITHMS EVALUATION REPORT
 ==========================================================================================
  DAA DEMO: TRIAGE SORTING ALGORITHM COMPARISON
 ==========================================================================================
-Running sorting algorithms on the sample dataset of 17 patients...
+Running sorting algorithms on the sample dataset of 21 patients...
 
 Metric                    | Selection Sort (O(n^2))      | Merge Sort (O(n log n))     
 ------------------------------------------------------------------------------------------
-Execution Time (ms)       | 0.4513                       | 0.4024                      
+Execution Time (ms)       | 0.6808                       | 0.5466                      
 Theoretical Complexity    | O(n^2)                       | O(n log n)                  
 Space Complexity          | O(1)                         | O(n)                        
-Calculated Comparisons    | 136                          | 68                          
+Calculated Comparisons    | 210                          | 84                          
 Best Suited For           | Small batches <= 10 patients | Large queues > 10 patients  
 ------------------------------------------------------------------------------------------
-Winner based on speed for this batch size (n=17): MERGE_SORT
+Winner based on speed for this batch size (n=21): MERGE_SORT
 Note: Selection Sort wins for tiny n due to lower constant factor. Merge Sort wins for n > 10.
 
 Sorted Patients Order (Highest Urgency First):
@@ -57,9 +61,13 @@ P012   | Sujata Kulkarni    | 44  | Severity.CRITICAL | 88.0   | 7       | 14   
 P017   | Satish             | 18  | Severity.CRITICAL | 86.0   | 0       | 15    | 95bpm/100/90%         
 P016   | P B TEJAS          | 18  | Severity.HIGH | 83.0   | 0       | 15    | 90bpm/100/90%         
 P008   | Kavitha Rao        | 16  | Severity.HIGH | 70.0   | 6       | 8     | 95bpm/108/96%         
+P020   | Aditya             | 20  | Severity.HIGH | 68.0   | 0       | 10    | 90bpm/100/90%         
+P021   | Aditya             | 20  | Severity.HIGH | 68.0   | 0       | 10    | 90bpm/100/90%         
 P006   | Ananya Das         | 29  | Severity.MEDIUM | 62.0   | 4       | 10    | 78bpm/122/97%         
 P009   | Deepak Menon       | 52  | Severity.MEDIUM | 62.0   | 8       | 7     | 65bpm/130/94%         
 P013   | Ajay Tiwari        | 19  | Severity.MEDIUM | 62.0   | 12      | 5     | 75bpm/112/99%         
+P018   | Sakshiii           | 19  | Severity.MEDIUM | 62.0   | 0       | 25    | 70bpm/150/94%         
+P019   | Revannn            | 20  | Severity.MEDIUM | 62.0   | 0       | 41    | 95bpm/100/91%         
 P011   | Manish Gupta       | 38  | Severity.MEDIUM | 60.0   | 10      | 9     | 82bpm/125/98%         
 P002   | Priya Sharma       | 34  | Severity.MEDIUM | 58.0   | 2       | 8     | 72bpm/118/98%         
 P004   | Sneha Iyer         | 22  | Severity.MEDIUM | 56.0   | 5       | 6     | 88bpm/115/99%         
@@ -73,6 +81,10 @@ Starting PRIORITY scheduler simulation with 2 doctor(s)...
 [Clock 0m] Patient P015 (Harish Venkat) ARRIVED. Priority Score: 100.0 (Severity.CRITICAL)
 [Clock 0m] Patient P016 (P B TEJAS) ARRIVED. Priority Score: 83.0 (Severity.HIGH)
 [Clock 0m] Patient P017 (Satish) ARRIVED. Priority Score: 86.0 (Severity.CRITICAL)
+[Clock 0m] Patient P018 (Sakshiii) ARRIVED. Priority Score: 62.0 (Severity.MEDIUM)
+[Clock 0m] Patient P019 (Revannn) ARRIVED. Priority Score: 62.0 (Severity.MEDIUM)
+[Clock 0m] Patient P020 (Aditya ) ARRIVED. Priority Score: 68.0 (Severity.HIGH)
+[Clock 0m] Patient P021 (Aditya ) ARRIVED. Priority Score: 68.0 (Severity.HIGH)
 [Clock 1m] Patient P003 (Ravi Kumar) ARRIVED. Priority Score: 100.0 (Severity.CRITICAL)
 [Clock 1m] Patient P014 (Rekha Pandey) ARRIVED. Priority Score: 100.0 (Severity.CRITICAL)
 [Clock 2m] Patient P002 (Priya Sharma) ARRIVED. Priority Score: 58.0 (Severity.MEDIUM)
@@ -89,6 +101,10 @@ Starting PRIORITY scheduler simulation with 2 doctor(s)...
 [Clock 15m] AGING STARVED: Patient P015 (Harish Venkat) bumped to score 100.0 after waiting 15m!
 [Clock 15m] AGING STARVED: Patient P016 (P B TEJAS) bumped to score 93.0 after waiting 15m!
 [Clock 15m] AGING STARVED: Patient P017 (Satish) bumped to score 96.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P018 (Sakshiii) bumped to score 72.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P019 (Revannn) bumped to score 72.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P020 (Aditya ) bumped to score 78.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P021 (Aditya ) bumped to score 78.0 after waiting 15m!
 [Clock 16m] AGING STARVED: Patient P014 (Rekha Pandey) bumped to score 100.0 after waiting 15m!
 [Clock 17m] AGING STARVED: Patient P002 (Priya Sharma) bumped to score 68.0 after waiting 15m!
 [Clock 17m] AGING STARVED: Patient P010 (Lalitha Bhat) bumped to score 100.0 after waiting 15m!
@@ -116,6 +132,10 @@ Starting PRIORITY scheduler simulation with 2 doctor(s)...
 [Clock 105m] Doctor 1 COMPLETED treatment of Patient P011 (Manish Gupta). Wait: 86m, Turnaround: 95m.
 [Clock 119m] Doctor 2 COMPLETED treatment of Patient P016 (P B TEJAS). Wait: 104m, Turnaround: 119m.
 [Clock 120m] Doctor 1 COMPLETED treatment of Patient P017 (Satish). Wait: 105m, Turnaround: 120m.
+[Clock 144m] Doctor 2 COMPLETED treatment of Patient P018 (Sakshiii). Wait: 119m, Turnaround: 144m.
+[Clock 154m] Doctor 2 COMPLETED treatment of Patient P020 (Aditya ). Wait: 144m, Turnaround: 154m.
+[Clock 161m] Doctor 1 COMPLETED treatment of Patient P019 (Revannn). Wait: 120m, Turnaround: 161m.
+[Clock 164m] Doctor 2 COMPLETED treatment of Patient P021 (Aditya ). Wait: 154m, Turnaround: 164m.
 
 ==========================================================================================
  PRIORITY SCHEDULER STATS & GANTT CHART
@@ -139,15 +159,19 @@ P014   | Rekha Pandey       | 1       | 18    | 56    | 74     | 55        | 73
 P015   | Harish Venkat      | 0       | 30    | 60    | 90     | 60        | 90        
 P016   | P B TEJAS          | 0       | 15    | 104   | 119    | 104       | 119       
 P017   | Satish             | 0       | 15    | 105   | 120    | 105       | 120       
+P018   | Sakshiii           | 0       | 25    | 119   | 144    | 119       | 144       
+P019   | Revannn            | 0       | 41    | 120   | 161    | 120       | 161       
+P020   | Aditya             | 0       | 10    | 144   | 154    | 144       | 154       
+P021   | Aditya             | 0       | 10    | 154   | 164    | 154       | 164       
 ------------------------------------------------------------------------------------------
-Average Waiting Time:    56.94 minutes
-Average Turnaround Time: 71.00 minutes
-Throughput:              17 patients completed
+Average Waiting Time:    71.67 minutes
+Average Turnaround Time: 87.14 minutes
+Throughput:              21 patients completed
 ------------------------------------------------------------------------------------------
 
 Gantt Timeline Visualization (1 block = 2 mins):
-Doctor 1: [P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P008][P008][P008][P008][P008][P008][P008][P008][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P004][P004][P004][P004][P004][P004][P011][P011][P011][P011][P011][P011][P011][P011][P011][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017]
-Doctor 2: [P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P006][P006][P006][P006][P006][P006][P006][P006][P006][P006][P002][P002][P002][P002][P002][P002][P002][P002][P009][P009][P009][P009][P009][P009][P009][P013][P013][P013][P013][P013][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016]
+Doctor 1: [P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P008][P008][P008][P008][P008][P008][P008][P008][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P004][P004][P004][P004][P004][P004][P011][P011][P011][P011][P011][P011][P011][P011][P011][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019]
+Doctor 2: [P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P006][P006][P006][P006][P006][P006][P006][P006][P006][P006][P002][P002][P002][P002][P002][P002][P002][P002][P009][P009][P009][P009][P009][P009][P009][P013][P013][P013][P013][P013][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P020][P020][P020][P020][P020][P020][P020][P020][P020][P020][P021][P021][P021][P021][P021][P021][P021][P021][P021][P021]
 
 4. OS SCHEDULER SIMULATION (ROUND ROBIN)
 Starting ROUND_ROBIN scheduler simulation with 2 doctor(s)...
@@ -156,6 +180,10 @@ Starting ROUND_ROBIN scheduler simulation with 2 doctor(s)...
 [Clock 0m] Patient P015 (Harish Venkat) ARRIVED. Priority Score: 100.0 (Severity.CRITICAL)
 [Clock 0m] Patient P016 (P B TEJAS) ARRIVED. Priority Score: 83.0 (Severity.HIGH)
 [Clock 0m] Patient P017 (Satish) ARRIVED. Priority Score: 86.0 (Severity.CRITICAL)
+[Clock 0m] Patient P018 (Sakshiii) ARRIVED. Priority Score: 62.0 (Severity.MEDIUM)
+[Clock 0m] Patient P019 (Revannn) ARRIVED. Priority Score: 62.0 (Severity.MEDIUM)
+[Clock 0m] Patient P020 (Aditya ) ARRIVED. Priority Score: 68.0 (Severity.HIGH)
+[Clock 0m] Patient P021 (Aditya ) ARRIVED. Priority Score: 68.0 (Severity.HIGH)
 [Clock 1m] Patient P003 (Ravi Kumar) ARRIVED. Priority Score: 100.0 (Severity.CRITICAL)
 [Clock 1m] Patient P014 (Rekha Pandey) ARRIVED. Priority Score: 100.0 (Severity.CRITICAL)
 [Clock 2m] Patient P002 (Priya Sharma) ARRIVED. Priority Score: 58.0 (Severity.MEDIUM)
@@ -176,6 +204,10 @@ Starting ROUND_ROBIN scheduler simulation with 2 doctor(s)...
 [Clock 15m] AGING STARVED: Patient P015 (Harish Venkat) bumped to score 100.0 after waiting 15m!
 [Clock 15m] AGING STARVED: Patient P016 (P B TEJAS) bumped to score 93.0 after waiting 15m!
 [Clock 15m] AGING STARVED: Patient P017 (Satish) bumped to score 96.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P018 (Sakshiii) bumped to score 72.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P019 (Revannn) bumped to score 72.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P020 (Aditya ) bumped to score 78.0 after waiting 15m!
+[Clock 15m] AGING STARVED: Patient P021 (Aditya ) bumped to score 78.0 after waiting 15m!
 [Clock 15m] QUANTUM EXPIRED: Patient P007 rotated out on Doctor 2.
 [Clock 16m] AGING STARVED: Patient P003 (Ravi Kumar) bumped to score 100.0 after waiting 15m!
 [Clock 16m] AGING STARVED: Patient P014 (Rekha Pandey) bumped to score 100.0 after waiting 15m!
@@ -202,39 +234,57 @@ Starting ROUND_ROBIN scheduler simulation with 2 doctor(s)...
 [Clock 45m] Doctor 1 COMPLETED treatment of Patient P015 (Harish Venkat). Wait: 15m, Turnaround: 45m.
 [Clock 45m] QUANTUM EXPIRED: Patient P017 rotated out on Doctor 2.
 [Clock 50m] Doctor 2 COMPLETED treatment of Patient P017 (Satish). Wait: 35m, Turnaround: 50m.
-[Clock 50m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
-[Clock 55m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
-[Clock 55m] QUANTUM EXPIRED: Patient P014 rotated out on Doctor 2.
-[Clock 60m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
-[Clock 60m] QUANTUM EXPIRED: Patient P014 rotated out on Doctor 2.
-[Clock 65m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
-[Clock 65m] QUANTUM EXPIRED: Patient P014 rotated out on Doctor 2.
-[Clock 68m] Doctor 2 COMPLETED treatment of Patient P014 (Rekha Pandey). Wait: 49m, Turnaround: 67m.
-[Clock 70m] Doctor 1 COMPLETED treatment of Patient P003 (Ravi Kumar). Wait: 44m, Turnaround: 69m.
-[Clock 73m] QUANTUM EXPIRED: Patient P002 rotated out on Doctor 2.
-[Clock 75m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
-[Clock 76m] Doctor 2 COMPLETED treatment of Patient P002 (Priya Sharma). Wait: 66m, Turnaround: 74m.
-[Clock 80m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
-[Clock 81m] QUANTUM EXPIRED: Patient P005 rotated out on Doctor 2.
-[Clock 85m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
-[Clock 86m] QUANTUM EXPIRED: Patient P005 rotated out on Doctor 2.
-[Clock 88m] Doctor 2 COMPLETED treatment of Patient P005 (Vikram Nair). Wait: 73m, Turnaround: 85m.
-[Clock 90m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
-[Clock 92m] Doctor 1 COMPLETED treatment of Patient P010 (Lalitha Bhat). Wait: 68m, Turnaround: 90m.
-[Clock 93m] QUANTUM EXPIRED: Patient P006 rotated out on Doctor 2.
-[Clock 97m] QUANTUM EXPIRED: Patient P004 rotated out on Doctor 1.
-[Clock 98m] Doctor 1 COMPLETED treatment of Patient P004 (Sneha Iyer). Wait: 87m, Turnaround: 93m.
-[Clock 98m] Doctor 2 COMPLETED treatment of Patient P006 (Ananya Das). Wait: 84m, Turnaround: 94m.
-[Clock 103m] QUANTUM EXPIRED: Patient P008 rotated out on Doctor 1.
-[Clock 103m] QUANTUM EXPIRED: Patient P012 rotated out on Doctor 2.
-[Clock 106m] Doctor 1 COMPLETED treatment of Patient P008 (Kavitha Rao). Wait: 92m, Turnaround: 100m.
-[Clock 108m] QUANTUM EXPIRED: Patient P012 rotated out on Doctor 2.
-[Clock 111m] QUANTUM EXPIRED: Patient P009 rotated out on Doctor 1.
-[Clock 112m] Doctor 2 COMPLETED treatment of Patient P012 (Sujata Kulkarni). Wait: 91m, Turnaround: 105m.
-[Clock 113m] Doctor 1 COMPLETED treatment of Patient P009 (Deepak Menon). Wait: 98m, Turnaround: 105m.
-[Clock 118m] Doctor 1 COMPLETED treatment of Patient P013 (Ajay Tiwari). Wait: 101m, Turnaround: 106m.
-[Clock 117m] QUANTUM EXPIRED: Patient P011 rotated out on Doctor 2.
-[Clock 121m] Doctor 2 COMPLETED treatment of Patient P011 (Manish Gupta). Wait: 102m, Turnaround: 111m.
+[Clock 50m] QUANTUM EXPIRED: Patient P018 rotated out on Doctor 1.
+[Clock 55m] QUANTUM EXPIRED: Patient P018 rotated out on Doctor 1.
+[Clock 55m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 60m] QUANTUM EXPIRED: Patient P018 rotated out on Doctor 1.
+[Clock 60m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 65m] QUANTUM EXPIRED: Patient P018 rotated out on Doctor 1.
+[Clock 65m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 70m] Doctor 1 COMPLETED treatment of Patient P018 (Sakshiii). Wait: 45m, Turnaround: 70m.
+[Clock 70m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 75m] QUANTUM EXPIRED: Patient P020 rotated out on Doctor 1.
+[Clock 75m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 80m] Doctor 1 COMPLETED treatment of Patient P020 (Aditya ). Wait: 70m, Turnaround: 80m.
+[Clock 80m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 85m] QUANTUM EXPIRED: Patient P021 rotated out on Doctor 1.
+[Clock 85m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 90m] Doctor 1 COMPLETED treatment of Patient P021 (Aditya ). Wait: 80m, Turnaround: 90m.
+[Clock 90m] QUANTUM EXPIRED: Patient P019 rotated out on Doctor 2.
+[Clock 91m] Doctor 2 COMPLETED treatment of Patient P019 (Revannn). Wait: 50m, Turnaround: 91m.
+[Clock 95m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
+[Clock 96m] QUANTUM EXPIRED: Patient P014 rotated out on Doctor 2.
+[Clock 100m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
+[Clock 101m] QUANTUM EXPIRED: Patient P014 rotated out on Doctor 2.
+[Clock 105m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
+[Clock 106m] QUANTUM EXPIRED: Patient P014 rotated out on Doctor 2.
+[Clock 109m] Doctor 2 COMPLETED treatment of Patient P014 (Rekha Pandey). Wait: 90m, Turnaround: 108m.
+[Clock 110m] QUANTUM EXPIRED: Patient P003 rotated out on Doctor 1.
+[Clock 115m] Doctor 1 COMPLETED treatment of Patient P003 (Ravi Kumar). Wait: 89m, Turnaround: 114m.
+[Clock 114m] QUANTUM EXPIRED: Patient P002 rotated out on Doctor 2.
+[Clock 117m] Doctor 2 COMPLETED treatment of Patient P002 (Priya Sharma). Wait: 107m, Turnaround: 115m.
+[Clock 120m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
+[Clock 122m] QUANTUM EXPIRED: Patient P005 rotated out on Doctor 2.
+[Clock 125m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
+[Clock 127m] QUANTUM EXPIRED: Patient P005 rotated out on Doctor 2.
+[Clock 129m] Doctor 2 COMPLETED treatment of Patient P005 (Vikram Nair). Wait: 114m, Turnaround: 126m.
+[Clock 130m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
+[Clock 134m] QUANTUM EXPIRED: Patient P006 rotated out on Doctor 2.
+[Clock 135m] QUANTUM EXPIRED: Patient P010 rotated out on Doctor 1.
+[Clock 137m] Doctor 1 COMPLETED treatment of Patient P010 (Lalitha Bhat). Wait: 113m, Turnaround: 135m.
+[Clock 139m] Doctor 2 COMPLETED treatment of Patient P006 (Ananya Das). Wait: 125m, Turnaround: 135m.
+[Clock 142m] QUANTUM EXPIRED: Patient P004 rotated out on Doctor 1.
+[Clock 143m] Doctor 1 COMPLETED treatment of Patient P004 (Sneha Iyer). Wait: 132m, Turnaround: 138m.
+[Clock 144m] QUANTUM EXPIRED: Patient P008 rotated out on Doctor 2.
+[Clock 147m] Doctor 2 COMPLETED treatment of Patient P008 (Kavitha Rao). Wait: 133m, Turnaround: 141m.
+[Clock 148m] QUANTUM EXPIRED: Patient P012 rotated out on Doctor 1.
+[Clock 152m] QUANTUM EXPIRED: Patient P009 rotated out on Doctor 2.
+[Clock 153m] QUANTUM EXPIRED: Patient P012 rotated out on Doctor 1.
+[Clock 154m] Doctor 2 COMPLETED treatment of Patient P009 (Deepak Menon). Wait: 139m, Turnaround: 146m.
+[Clock 157m] Doctor 1 COMPLETED treatment of Patient P012 (Sujata Kulkarni). Wait: 136m, Turnaround: 150m.
+[Clock 159m] QUANTUM EXPIRED: Patient P011 rotated out on Doctor 2.
+[Clock 162m] Doctor 1 COMPLETED treatment of Patient P013 (Ajay Tiwari). Wait: 145m, Turnaround: 150m.
+[Clock 163m] Doctor 2 COMPLETED treatment of Patient P011 (Manish Gupta). Wait: 144m, Turnaround: 153m.
 
 ==========================================================================================
  ROUND_ROBIN SCHEDULER STATS & GANTT CHART
@@ -242,31 +292,35 @@ Starting ROUND_ROBIN scheduler simulation with 2 doctor(s)...
 ID     | Name               | Arrival | Burst | Start | Finish | Wait Time | Turnaround
 ------------------------------------------------------------------------------------------
 P001   | Arjun Mehta        | 0       | 15    | 0     | 15     | 0         | 15        
-P002   | Priya Sharma       | 2       | 8     | 68    | 76     | 66        | 74        
-P003   | Ravi Kumar         | 1       | 25    | 45    | 70     | 44        | 69        
-P004   | Sneha Iyer         | 5       | 6     | 92    | 98     | 87        | 93        
-P005   | Vikram Nair        | 3       | 12    | 76    | 88     | 73        | 85        
-P006   | Ananya Das         | 4       | 10    | 88    | 98     | 84        | 94        
+P002   | Priya Sharma       | 2       | 8     | 109   | 117    | 107       | 115       
+P003   | Ravi Kumar         | 1       | 25    | 90    | 115    | 89        | 114       
+P004   | Sneha Iyer         | 5       | 6     | 137   | 143    | 132       | 138       
+P005   | Vikram Nair        | 3       | 12    | 117   | 129    | 114       | 126       
+P006   | Ananya Das         | 4       | 10    | 129   | 139    | 125       | 135       
 P007   | Suresh Pillai      | 0       | 20    | 0     | 20     | 0         | 20        
-P008   | Kavitha Rao        | 6       | 8     | 98    | 106    | 92        | 100       
-P009   | Deepak Menon       | 8       | 7     | 106   | 113    | 98        | 105       
-P010   | Lalitha Bhat       | 2       | 22    | 70    | 92     | 68        | 90        
-P011   | Manish Gupta       | 10      | 9     | 112   | 121    | 102       | 111       
-P012   | Sujata Kulkarni    | 7       | 14    | 98    | 112    | 91        | 105       
-P013   | Ajay Tiwari        | 12      | 5     | 113   | 118    | 101       | 106       
-P014   | Rekha Pandey       | 1       | 18    | 50    | 68     | 49        | 67        
+P008   | Kavitha Rao        | 6       | 8     | 139   | 147    | 133       | 141       
+P009   | Deepak Menon       | 8       | 7     | 147   | 154    | 139       | 146       
+P010   | Lalitha Bhat       | 2       | 22    | 115   | 137    | 113       | 135       
+P011   | Manish Gupta       | 10      | 9     | 154   | 163    | 144       | 153       
+P012   | Sujata Kulkarni    | 7       | 14    | 143   | 157    | 136       | 150       
+P013   | Ajay Tiwari        | 12      | 5     | 157   | 162    | 145       | 150       
+P014   | Rekha Pandey       | 1       | 18    | 91    | 109    | 90        | 108       
 P015   | Harish Venkat      | 0       | 30    | 15    | 45     | 15        | 45        
 P016   | P B TEJAS          | 0       | 15    | 20    | 35     | 20        | 35        
 P017   | Satish             | 0       | 15    | 35    | 50     | 35        | 50        
+P018   | Sakshiii           | 0       | 25    | 45    | 70     | 45        | 70        
+P019   | Revannn            | 0       | 41    | 50    | 91     | 50        | 91        
+P020   | Aditya             | 0       | 10    | 70    | 80     | 70        | 80        
+P021   | Aditya             | 0       | 10    | 80    | 90     | 80        | 90        
 ------------------------------------------------------------------------------------------
-Average Waiting Time:    60.29 minutes
-Average Turnaround Time: 74.35 minutes
-Throughput:              17 patients completed
+Average Waiting Time:    84.86 minutes
+Average Turnaround Time: 100.33 minutes
+Throughput:              21 patients completed
 ------------------------------------------------------------------------------------------
 
 Gantt Timeline Visualization (1 block = 2 mins):
-Doctor 1: [P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P004][P004][P004][P004][P004][P004][P008][P008][P008][P008][P008][P008][P008][P008][P009][P009][P009][P009][P009][P009][P009][P013][P013][P013][P013][P013]
-Doctor 2: [P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P002][P002][P002][P002][P002][P002][P002][P002][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P006][P006][P006][P006][P006][P006][P006][P006][P006][P006][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P011][P011][P011][P011][P011][P011][P011][P011][P011]
+Doctor 1: [P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P001][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P015][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P018][P020][P020][P020][P020][P020][P020][P020][P020][P020][P020][P021][P021][P021][P021][P021][P021][P021][P021][P021][P021][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P003][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P010][P004][P004][P004][P004][P004][P004][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P012][P013][P013][P013][P013][P013]
+Doctor 2: [P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P007][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P016][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P017][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P019][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P014][P002][P002][P002][P002][P002][P002][P002][P002][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P005][P006][P006][P006][P006][P006][P006][P006][P006][P006][P006][P008][P008][P008][P008][P008][P008][P008][P008][P009][P009][P009][P009][P009][P009][P009][P011][P011][P011][P011][P011][P011][P011][P011][P011]
 
 5. CONCEPTUAL MAPPINGS & COMPLEXITY OVERVIEW
 ------------------------------------------------------------------------------------------

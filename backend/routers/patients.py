@@ -47,7 +47,7 @@ def get_patient(patient_id: str):
 
 
 @router.post("")
-def add_patient(req: AddPatientRequest):
+async def add_patient(req: AddPatientRequest):
     """
     Add a new patient mid-simulation (B02).
     Priority score and severity are auto-computed from vitals.
@@ -84,7 +84,7 @@ def add_patient(req: AddPatientRequest):
 
 
 @router.delete("/{patient_id}")
-def delete_patient(patient_id: str):
+async def delete_patient(patient_id: str):
     """Delete a patient by ID (B02/Remove Patient support)."""
     engine = SimulationEngine.get()
     success = engine.remove_patient(patient_id)
