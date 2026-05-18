@@ -11,7 +11,7 @@ export const api = axios.create({
 })
 
 // Toggle mock mode — set to false when backend is ready
-export const MOCK = true
+export const MOCK = false
 
 // WebSocket URL
 export const WS_URL = 'ws://localhost:8000/ws/simulation'
