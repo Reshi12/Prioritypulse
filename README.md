@@ -14,12 +14,6 @@
 
 ---
 
-[🌐 Live Interface](http://localhost:5173) • [📖 Interactive Swagger Docs](http://localhost:8000/docs) • [📊 Simulation Report](file:///e:/ss/Prioritypulse/triage_simulation_report.txt)
-
-</div>
-
----
-
 ## 📖 Project Overview
 
 **PriorityPulse** is a clinical emergency room simulation system. It models patients entering an ER queue as active CPU processes, calculating an algorithmic triage priority score from dynamic vital parameters (Heart Rate, Blood Pressure, Oxygen Saturation, and clinical symptom severity). The application serves as an educational and operational dashboard to observe and compare advanced computer science concepts:
