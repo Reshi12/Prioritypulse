@@ -101,7 +101,7 @@ export default function GanttChart({ ganttData = [], patients = [], numDoctors =
 
       {/* Chart Area */}
       <div style={{ overflowX: 'auto', paddingBottom: '8px' }}>
-        <div style={{ minWidth: `${Math.max(600, maxTime * 18)}px` }}>
+        <div style={{ minWidth: `${Math.max(800, maxTime * 35)}px` }}>
           {/* Time axis header */}
           <div style={{
             display: 'flex', alignItems: 'flex-end', marginLeft: '100px',
@@ -131,28 +131,28 @@ export default function GanttChart({ ganttData = [], patients = [], numDoctors =
 
           {/* Doctor lanes */}
           {Object.entries(doctorLanes).map(([doctorId, blocks]) => (
-            <div key={doctorId} className="gantt-row">
+            <div key={doctorId} className="gantt-row" style={{ padding: '16px 0', borderBottom: '1px dashed var(--border-subtle)' }}>
               <div style={{
                 width: '90px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', gap: '6px',
                 paddingRight: '12px',
               }}>
                 <div style={{
-                  width: '28px', height: '28px', borderRadius: '8px',
+                  width: '32px', height: '32px', borderRadius: '8px',
                   background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '0.7rem', fontWeight: '700', color: 'var(--accent-indigo-light)',
+                  fontSize: '0.8rem', fontWeight: '700', color: 'var(--accent-indigo-light)',
                 }}>
                   D{doctorId}
                 </div>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: '500' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '500' }}>
                   Doctor
                 </span>
               </div>
 
               <div style={{
                 flex: 1, display: 'flex', position: 'relative',
-                height: '40px', alignItems: 'center',
+                height: '44px', alignItems: 'center',
                 background: 'rgba(255,255,255,0.01)', borderRadius: '6px',
               }}>
                 {blocks.map((block, idx) => {
@@ -163,24 +163,38 @@ export default function GanttChart({ ganttData = [], patients = [], numDoctors =
                   const isHovered = hoveredBlock === `${doctorId}-${idx}`
 
                   return (
-                    <div
-                      key={idx}
-                      className="gantt-block"
-                      style={{
-                        position: 'absolute',
-                        left: `${leftPercent}%`,
-                        width: `${widthPercent}%`,
-                        background: `linear-gradient(135deg, ${color}, ${color}cc)`,
-                        opacity: isHovered ? 1 : 0.85,
-                        transform: isHovered ? 'scaleY(1.2)' : 'scaleY(1)',
-                        zIndex: isHovered ? 10 : 1,
-                      }}
-                      onMouseEnter={() => setHoveredBlock(`${doctorId}-${idx}`)}
-                      onMouseLeave={() => setHoveredBlock(null)}
-                      title={`${block.patient_id}${patient ? ` - ${patient.name}` : ''} | ${block.start}-${block.end}m`}
-                    >
-                      {widthPercent > 4 ? block.patient_id.replace('P0', '').replace('P', '') : ''}
-                    </div>
+                      <div
+                        key={idx}
+                        className="gantt-block"
+                        style={{
+                          position: 'absolute',
+                          left: `${leftPercent}%`,
+                          width: `calc(${widthPercent}% - 2px)`,
+                          height: '36px',
+                          borderRadius: '4px',
+                          background: `linear-gradient(135deg, ${color}, ${color}cc)`,
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                          opacity: isHovered ? 1 : 0.85,
+                          transform: isHovered ? 'scaleY(1.15)' : 'scaleY(1)',
+                          zIndex: isHovered ? 10 : 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#fff',
+                          fontWeight: '700',
+                          fontSize: '0.75rem',
+                          textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                          transition: 'all var(--transition-fast)',
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                        }}
+                        onMouseEnter={() => setHoveredBlock(`${doctorId}-${idx}`)}
+                        onMouseLeave={() => setHoveredBlock(null)}
+                        title={`${block.patient_id}${patient ? ` - ${patient.name}` : ''} | ${block.start}-${block.end}m`}
+                      >
+                        {block.patient_id.replace(/^P0*/, '')}
+                      </div>
                   )
                 })}
               </div>

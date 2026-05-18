@@ -298,6 +298,7 @@ export default function Dashboard() {
         isOpen={showAddForm}
         onClose={() => setShowAddForm(false)}
         onSubmit={handleAddPatient}
+        nextPatientId={`P${String(Math.max(0, ...patients.map(p => parseInt(p.patient_id.replace(/\D/g, '')) || 0)) + 1).padStart(3, '0')}`}
       />
 
       {/* ── Responsive Styles ── */}

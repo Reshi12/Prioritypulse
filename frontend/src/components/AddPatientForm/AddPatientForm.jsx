@@ -26,7 +26,7 @@ const initialForm = {
   burst_time: '10',
 }
 
-export default function AddPatientForm({ isOpen, onClose, onSubmit }) {
+export default function AddPatientForm({ isOpen, onClose, onSubmit, nextPatientId = `P${String(Date.now()).slice(-3)}` }) {
   const [form, setForm] = useState(initialForm)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
@@ -55,7 +55,7 @@ export default function AddPatientForm({ isOpen, onClose, onSubmit }) {
 
     try {
       const patientData = {
-        patient_id: `P${String(Date.now()).slice(-3)}`,
+        patient_id: nextPatientId,
         name: form.name,
         age: parseInt(form.age),
         vitals: {

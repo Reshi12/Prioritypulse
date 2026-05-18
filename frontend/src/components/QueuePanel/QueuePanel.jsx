@@ -29,11 +29,23 @@ const columnConfig = {
 export default function QueuePanel({ patients, agedPatients = [], simState }) {
   const [expandedColumn, setExpandedColumn] = useState(null)
 
-  const waiting = patients
-    .filter((p) => p.status === 'waiting')
+  const patientMap = patients.reduce((acc, p) => {
+    acc[p.patient_id] = p
+    return acc
+  }, {})
+
+  const waiting = (simState?.queue?.waiting || [])
+    .map(id => patientMap[id])
+    .filter(Boolean)
     .sort((a, b) => b.priority_score - a.priority_score)
-  const treating = patients.filter((p) => p.status === 'in_treatment')
-  const done = patients.filter((p) => p.status === 'done')
+    
+  const treating = (simState?.queue?.in_treatment || [])
+    .map(id => patientMap[id])
+    .filter(Boolean)
+    
+  const done = (simState?.queue?.done || [])
+    .map(id => patientMap[id])
+    .filter(Boolean)
 
   const columns = [
     { key: 'waiting', patients: waiting },

@@ -93,7 +93,14 @@ class SimulationEngine:
             patient.arrival_time = self.clock
         self.patients.append(patient)
         self._remaining[patient.patient_id] = patient.burst_time
+        if patient.arrival_time <= self.clock:
+            self._activated.add(patient.patient_id)
         self._persist_patients()
+        
+        # If broadcast is set, push the state immediately so frontend sees the update
+        if self._broadcast:
+            asyncio.create_task(self._broadcast(self.get_state().model_dump()))
+            
         return patient
 
     # ── simulation controls ─────────────────────────────────────────
