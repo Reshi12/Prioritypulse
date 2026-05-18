@@ -23,7 +23,7 @@ const TABS = [
 ]
 
 export default function Dashboard() {
-  const { patients, addPatient, refresh: refreshPatients } = usePatients()
+  const { patients: initialPatients, addPatient, deletePatient, refresh: refreshPatients } = usePatients()
   const {
     simState, isConnected, isLoading,
     onStart, onPause, onStep, onReset
@@ -35,11 +35,26 @@ export default function Dashboard() {
   const [scheduler, setScheduler] = useState('priority')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // Use live simulation patients if available, otherwise initial loaded patients
+  const patients = simState?.patients && simState.patients.length > 0
+    ? simState.patients
+    : initialPatients
+
   const agedPatients = simState?.aged_patients || []
 
   const handleAddPatient = async (data) => {
     await addPatient(data)
     await refreshPatients()
+  }
+
+  const handleDeletePatient = async (patientId) => {
+    if (window.confirm(`Are you sure you want to remove patient ${patientId}?`)) {
+      try {
+        await deletePatient(patientId)
+      } catch (err) {
+        alert('Failed to remove patient: ' + err.message)
+      }
+    }
   }
 
   return (
@@ -195,6 +210,7 @@ export default function Dashboard() {
               patients={patients}
               agedPatients={agedPatients}
               simState={simState}
+              onDeletePatient={handleDeletePatient}
             />
 
             {/* Gantt Chart */}
@@ -219,9 +235,6 @@ export default function Dashboard() {
                   {patients.length} patients registered · Sorted by priority score
                 </p>
               </div>
-              <button className="btn btn-primary" onClick={() => setShowAddForm(true)}>
-                <UserPlus size={16} /> Add Patient
-              </button>
             </div>
             <div style={{
               display: 'grid', gap: '14px',
@@ -234,6 +247,7 @@ export default function Dashboard() {
                     <PatientCard
                       patient={patient}
                       isAged={agedPatients.includes(patient.patient_id)}
+                      onDelete={() => handleDeletePatient(patient.patient_id)}
                     />
                   </div>
                 ))}

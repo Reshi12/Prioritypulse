@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { getPatients, addPatient } from '../api/endpoints'
+import { getPatients, addPatient, deletePatient } from '../api/endpoints'
 
 export function usePatients() {
   const [patients, setPatients] = useState([])
@@ -35,6 +35,17 @@ export function usePatients() {
     }
   }, [])
 
+  const handleDeletePatient = useCallback(async (patientId) => {
+    try {
+      await deletePatient(patientId)
+      setPatients((prev) => prev.filter((p) => p.patient_id !== patientId))
+    } catch (err) {
+      console.error('Failed to delete patient:', err)
+      throw err
+    }
+  }, [])
+
+
   // Derived data
   const waitingPatients = patients.filter((p) => p.status === 'waiting')
   const treatingPatients = patients.filter((p) => p.status === 'in_treatment')
@@ -62,6 +73,7 @@ export function usePatients() {
     isLoading,
     error,
     addPatient: handleAddPatient,
+    deletePatient: handleDeletePatient,
     refresh: fetchPatients,
   }
 }

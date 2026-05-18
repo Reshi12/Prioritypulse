@@ -50,3 +50,5 @@ class Patient(BaseModel):
     status: Literal["waiting", "in_treatment", "done"] = "waiting"
     # Aging
     last_priority_bump: int = 0
+    # RR Queue Ordering
+    last_queued_time: int = 0

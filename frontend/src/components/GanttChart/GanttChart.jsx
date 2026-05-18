@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { BarChart3, Clock, Info } from 'lucide-react'
 
 const severityColors = {
@@ -16,6 +16,7 @@ const patientColors = [
 
 export default function GanttChart({ ganttData = [], patients = [], numDoctors = 1 }) {
   const [hoveredBlock, setHoveredBlock] = useState(null)
+  const scrollContainerRef = useRef(null)
 
   // Build patient lookup and color map
   const patientMap = useMemo(() => {
@@ -56,6 +57,13 @@ export default function GanttChart({ ganttData = [], patients = [], numDoctors =
     for (let t = 0; t <= maxTime; t += step) markers.push(t)
     return markers
   }, [maxTime])
+
+  // Auto-scroll timeline container to the right as timeline grows
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth
+    }
+  }, [ganttData.length, maxTime])
 
   if (ganttData.length === 0) {
     return (
@@ -100,29 +108,35 @@ export default function GanttChart({ ganttData = [], patients = [], numDoctors =
       </div>
 
       {/* Chart Area */}
-      <div style={{ overflowX: 'auto', paddingBottom: '8px' }}>
+      <div ref={scrollContainerRef} style={{ overflowX: 'auto', paddingBottom: '8px', scrollBehavior: 'smooth' }}>
         <div style={{ minWidth: `${Math.max(800, maxTime * 35)}px` }}>
           {/* Time axis header */}
           <div style={{
-            display: 'flex', alignItems: 'flex-end', marginLeft: '100px',
+            display: 'flex', alignItems: 'flex-end',
             borderBottom: '1px solid var(--border-subtle)', paddingBottom: '8px',
-            marginBottom: '4px',
+            marginBottom: '8px',
+            position: 'relative',
+            height: '24px',
           }}>
-            {timeMarkers.map((t) => (
-              <div
-                key={t}
-                style={{
-                  position: 'absolute',
-                  left: `${100 + (t / maxTime) * (100)}%`,
-                  fontSize: '0.65rem',
-                  color: 'var(--text-muted)',
-                  fontWeight: '600',
-                }}
-              />
-            ))}
-            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+            {/* Left padding offset matching doctor label */}
+            <div style={{ width: '90px', flexShrink: 0 }} />
+
+            {/* Timeline markers wrapper */}
+            <div style={{ flex: 1, position: 'relative', height: '100%' }}>
               {timeMarkers.map((t) => (
-                <span key={t} style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600', fontVariantNumeric: 'tabular-nums' }}>
+                <span
+                  key={t}
+                  style={{
+                    position: 'absolute',
+                    left: `${(t / maxTime) * 100}%`,
+                    transform: 'translateX(-50%)',
+                    fontSize: '0.65rem',
+                    color: 'var(--text-muted)',
+                    fontWeight: '600',
+                    fontVariantNumeric: 'tabular-nums',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {t}m
                 </span>
               ))}

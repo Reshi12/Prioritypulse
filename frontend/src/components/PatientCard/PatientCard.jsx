@@ -1,5 +1,5 @@
 import {
-  Heart, Droplets, Wind, Thermometer, Clock, Activity, AlertTriangle
+  Heart, Droplets, Wind, Thermometer, Clock, Activity, AlertTriangle, Trash2
 } from 'lucide-react'
 
 const severityConfig = {
@@ -15,7 +15,7 @@ const statusLabels = {
   done: 'Completed',
 }
 
-export default function PatientCard({ patient, isAged = false, compact = false }) {
+export default function PatientCard({ patient, isAged = false, compact = false, onDelete }) {
   const { vitals } = patient
   const sevConfig = severityConfig[patient.severity] || severityConfig.LOW
   const SevIcon = sevConfig.icon
@@ -60,6 +60,21 @@ export default function PatientCard({ patient, isAged = false, compact = false }
             <span className={`badge ${sevConfig.class}`}>
               {patient.severity}
             </span>
+            {onDelete && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onDelete(); }}
+                style={{
+                  background: 'transparent', border: 'none', color: 'var(--text-muted)',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '4px', borderRadius: '6px', transition: 'all 0.2s',
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = 'rgba(239,68,68,0.1)' }}
+                onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent' }}
+                title="Remove Patient"
+              >
+                <Trash2 size={12} />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -92,14 +107,31 @@ export default function PatientCard({ patient, isAged = false, compact = false }
             </span>
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-          <span className={`badge ${sevConfig.class}`}>
-            <SevIcon size={10} />
-            {patient.severity}
-          </span>
-          <span className={`badge status-${patient.status}`}>
-            {statusLabels[patient.status]}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+            <span className={`badge ${sevConfig.class}`}>
+              <SevIcon size={10} />
+              {patient.severity}
+            </span>
+            <span className={`badge status-${patient.status}`}>
+              {statusLabels[patient.status]}
+            </span>
+          </div>
+          {onDelete && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onDelete(); }}
+              style={{
+                background: 'transparent', border: 'none', color: 'var(--text-muted)',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '6px', borderRadius: '8px', transition: 'all 0.2s',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = 'rgba(239,68,68,0.1)' }}
+              onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent' }}
+              title="Remove Patient"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
 

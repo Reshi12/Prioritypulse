@@ -19,6 +19,10 @@ export const addPatient = (data) =>
       })
     : api.post('/patients', data)
 
+export const deletePatient = (patientId) =>
+  MOCK ? Promise.resolve({ ok: true }) : api.delete(`/patients/${patientId}`)
+
+
 // ── Simulation endpoints ──
 export const startSim = (params) =>
   MOCK ? Promise.resolve({ ok: true, clock: 0 }) : api.post('/simulation/start', params)

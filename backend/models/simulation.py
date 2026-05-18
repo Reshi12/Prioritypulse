@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from models.patient import Patient
 
 
 class GanttEntry(BaseModel):
@@ -30,3 +31,5 @@ class SimulationStateResponse(BaseModel):
     gantt: list[GanttEntry] = []
     stats: SchedulerStats = SchedulerStats()
     aged_patients: list[str] = []
+    patients: list[Patient] = []
+

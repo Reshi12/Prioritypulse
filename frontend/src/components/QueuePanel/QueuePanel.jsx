@@ -26,7 +26,7 @@ const columnConfig = {
   },
 }
 
-export default function QueuePanel({ patients, agedPatients = [], simState }) {
+export default function QueuePanel({ patients, agedPatients = [], simState, onDeletePatient }) {
   const [expandedColumn, setExpandedColumn] = useState(null)
 
   const patientMap = patients.reduce((acc, p) => {
@@ -150,6 +150,7 @@ export default function QueuePanel({ patients, agedPatients = [], simState }) {
                         patient={patient}
                         compact
                         isAged={agedPatients.includes(patient.patient_id)}
+                        onDelete={onDeletePatient ? () => onDeletePatient(patient.patient_id) : undefined}
                       />
                     </div>
                   ))

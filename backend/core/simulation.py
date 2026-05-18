@@ -58,7 +58,39 @@ class SimulationEngine:
     # ── patient management ──────────────────────────────────────────
 
     def load_seed(self):
-        """Load seed_patients.json, compute priorities, populate internal state."""
+        """Load patients.json if exists, otherwise fall back to seed_patients.json."""
+        from utils.file_store import load_patients_json
+        saved = load_patients_json()
+        if saved:
+            self.patients.clear()
+            self._remaining.clear()
+            self._pid_counter = 0
+            for data in saved:
+                vitals = PatientVitals(**data["vitals"])
+                p = Patient(
+                    patient_id=data["patient_id"],
+                    name=data["name"],
+                    age=data["age"],
+                    vitals=vitals,
+                    arrival_time=data.get("arrival_time", 0),
+                    burst_time=data.get("burst_time", 10),
+                    priority_score=data.get("priority_score", 0.0),
+                    severity=data.get("severity", "LOW"),
+                    status=data.get("status", "waiting"),
+                    waiting_time=data.get("waiting_time", 0),
+                    turnaround_time=data.get("turnaround_time", 0),
+                    start_time=data.get("start_time"),
+                    finish_time=data.get("finish_time"),
+                    last_priority_bump=data.get("last_priority_bump", 0),
+                    last_queued_time=data.get("last_queued_time", data.get("arrival_time", 0)),
+                    pid=data.get("pid", 0),
+                )
+                self.patients.append(p)
+                self._remaining[p.patient_id] = p.burst_time
+                if p.pid > self._pid_counter:
+                    self._pid_counter = p.pid
+            return
+
         seed = load_seed_patients()
         self.patients.clear()
         self._remaining.clear()
@@ -77,6 +109,7 @@ class SimulationEngine:
                 priority_score=score,
                 severity=severity,
                 pid=self._pid_counter,
+                last_queued_time=data.get("arrival_time", 0),
             )
             self.patients.append(p)
             self._remaining[p.patient_id] = p.burst_time
@@ -91,6 +124,7 @@ class SimulationEngine:
         patient.pid = self._pid_counter
         if patient.arrival_time < 0:
             patient.arrival_time = self.clock
+        patient.last_queued_time = patient.arrival_time
         self.patients.append(patient)
         self._remaining[patient.patient_id] = patient.burst_time
         if patient.arrival_time <= self.clock:
@@ -102,6 +136,38 @@ class SimulationEngine:
             asyncio.create_task(self._broadcast(self.get_state().model_dump()))
             
         return patient
+
+    def remove_patient(self, patient_id: str) -> bool:
+        """Remove a patient by ID (mid-simulation support). Returns True if found & removed."""
+        patient = self._get(patient_id)
+        if not patient:
+            return False
+
+        # Remove from main list
+        self.patients = [p for p in self.patients if p.patient_id != patient_id]
+
+        # Cleanup internal state
+        if patient_id in self._remaining:
+            del self._remaining[patient_id]
+        if patient_id in self._activated:
+            self._activated.remove(patient_id)
+        if patient_id in self.aged_patients:
+            self.aged_patients.remove(patient_id)
+
+        # Free any doctor treating this patient
+        for doc_id, p_id in list(self._doctor_patient.items()):
+            if p_id == patient_id:
+                self._doctor_patient[doc_id] = None
+                self._rr_used[doc_id] = 0
+
+        self._persist_patients()
+        save_simulation_state(self.get_state().model_dump())
+
+        # Broadcast update immediately
+        if self._broadcast:
+            asyncio.create_task(self._broadcast(self.get_state().model_dump()))
+
+        return True
 
     # ── simulation controls ─────────────────────────────────────────
 
@@ -145,6 +211,7 @@ class SimulationEngine:
             p.start_time = None
             p.finish_time = None
             p.last_priority_bump = 0
+            p.last_queued_time = p.arrival_time
             self._remaining[p.patient_id] = p.burst_time
         self._persist_patients()
         save_simulation_state(self.get_state().model_dump())
@@ -178,6 +245,7 @@ class SimulationEngine:
                 throughput=len(completed),
             ),
             aged_patients=list(self.aged_patients),
+            patients=self.patients.copy(),
         )
 
     def get_patients_list(self) -> list[dict]:
@@ -233,6 +301,7 @@ class SimulationEngine:
                         used = self._rr_used.get(doc_id, 0)
                         if used >= ROUND_ROBIN_QUANTUM and self._remaining.get(current_pid, 0) > 0:
                             current.status = "waiting"
+                            current.last_queued_time = self.clock
                             self._doctor_patient[doc_id] = None
                             self._rr_used[doc_id] = 0
                             self._assign(doc_id)
@@ -248,12 +317,24 @@ class SimulationEngine:
             # --- treat for 1 minute ---
             if current_pid and current and current.status == "in_treatment":
                 self._remaining[current_pid] = max(0, self._remaining.get(current_pid, 0) - 1)
-                self.gantt.append(GanttEntry(
-                    patient_id=current_pid,
-                    doctor_id=doc_id,
-                    start=self.clock,
-                    end=self.clock + 1,
-                ))
+                
+                # Check if we can merge with the previous GanttEntry for this doctor
+                last_entry = None
+                for entry in reversed(self.gantt):
+                    if entry.doctor_id == doc_id:
+                        last_entry = entry
+                        break
+                        
+                if last_entry and last_entry.patient_id == current_pid and last_entry.end == self.clock:
+                    last_entry.end = self.clock + 1
+                else:
+                    self.gantt.append(GanttEntry(
+                        patient_id=current_pid,
+                        doctor_id=doc_id,
+                        start=self.clock,
+                        end=self.clock + 1,
+                    ))
+                
                 self._rr_used[doc_id] = self._rr_used.get(doc_id, 0) + 1
 
                 if self._remaining[current_pid] <= 0:
@@ -302,8 +383,8 @@ class SimulationEngine:
         if self.scheduler_type == "priority":
             chosen = available[0]
         else:
-            # Round robin: FIFO by arrival
-            available.sort(key=lambda p: p.arrival_time)
+            # Round robin: FIFO by queue time (FIFO of active ready queue)
+            available.sort(key=lambda p: p.last_queued_time)
             chosen = available[0]
         chosen.status = "in_treatment"
         if chosen.start_time is None:

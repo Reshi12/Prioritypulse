@@ -200,16 +200,34 @@ function AlgoCard({ name, data, isWinner, color, onShowSteps, showSteps }) {
         }}>
           {data.steps.map((step, i) => (
             <div key={i} style={{
-              padding: '6px 10px', borderRadius: '6px',
+              padding: '8px 12px', borderRadius: '6px',
               background: 'rgba(255,255,255,0.02)',
-              fontSize: '0.68rem', color: 'var(--text-muted)',
+              fontSize: '0.7rem', color: 'var(--text-muted)',
               fontFamily: 'monospace',
-              borderLeft: `2px solid ${color}40`,
+              borderLeft: `2px solid ${color}80`,
+              lineHeight: '1.4',
             }}>
-              <span style={{ color, fontWeight: '600' }}>Step {i + 1}:</span>{' '}
-              {step.swapped
-                ? `Swapped ${step.swapped[0]} ↔ ${step.swapped[1] || 'none'}`
-                : `Merged [${step.merged_ids?.join(', ')}]`}
+              {step.selected !== undefined ? (
+                <div>
+                  <span style={{ color, fontWeight: '700' }}>Pass {step.pass + 1}:</span>{' '}
+                  Selected <strong style={{ color: 'var(--text-primary)' }}>{step.selected}</strong>{' '}
+                  {step.swapped_with ? (
+                    <span>↔ Swapped with <strong style={{ color: 'var(--text-primary)' }}>{step.swapped_with}</strong></span>
+                  ) : (
+                    <span style={{ opacity: 0.5 }}>(no swap)</span>
+                  )}
+                  {step.queue_snapshot && (
+                    <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.3)', marginTop: '4px' }}>
+                      Queue: [{step.queue_snapshot.join(', ')}]
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <span style={{ color, fontWeight: '700' }}>Merge {i + 1}:</span>{' '}
+                  Merged [<span style={{ color: 'var(--text-primary)' }}>{step.merged_ids?.join(', ')}</span>]
+                </div>
+              )}
             </div>
           ))}
         </div>
