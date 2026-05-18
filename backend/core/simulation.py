@@ -67,6 +67,7 @@ class SimulationEngine:
             self._pid_counter = 0
             for data in saved:
                 vitals = PatientVitals(**data["vitals"])
+                score, severity = calculate_priority(vitals)
                 p = Patient(
                     patient_id=data["patient_id"],
                     name=data["name"],
@@ -74,8 +75,8 @@ class SimulationEngine:
                     vitals=vitals,
                     arrival_time=data.get("arrival_time", 0),
                     burst_time=data.get("burst_time", 10),
-                    priority_score=data.get("priority_score", 0.0),
-                    severity=data.get("severity", "LOW"),
+                    priority_score=score,
+                    severity=severity,
                     status=data.get("status", "waiting"),
                     waiting_time=data.get("waiting_time", 0),
                     turnaround_time=data.get("turnaround_time", 0),

@@ -25,48 +25,67 @@ SYMPTOM_WEIGHTS = {
 
 
 def calculate_priority(vitals) -> tuple[float, str]:
-    """Returns (priority_score, severity_label)"""
-    score = 50.0
+    """
+    Returns (priority_score, severity_label).
+    Formula recalibrated to lower base score (15.0) and uses fine-grained vital tie-breakers
+    to ensure wide distribution and unique priority scores for patients.
+    """
+    score = 15.0
 
-    # Heart rate scoring
+    # 1. Step-wise scoring based on clinically meaningful deviations
+    
+    # Heart rate step (max +18)
     hr = vitals.heart_rate
     if hr < 40 or hr > 150:
-        score += 20
+        score += 18
     elif hr < 60 or hr > 120:
         score += 10
     elif hr < 50 or hr > 100:
         score += 5
 
-    # BP scoring (systolic)
+    # BP step (systolic) (max +15)
     sbp = vitals.systolic_bp
     if sbp < 80 or sbp > 180:
         score += 15
     elif sbp < 90 or sbp > 160:
         score += 8
+    elif sbp < 100 or sbp > 140:
+        score += 4
 
-    # Oxygen saturation
+    # Oxygen saturation step (max +22)
     spo2 = vitals.oxygen_saturation
     if spo2 < 85:
-        score += 25
+        score += 22
     elif spo2 < 90:
-        score += 18
+        score += 15
     elif spo2 < 95:
         score += 8
 
-    # Symptom weights (take highest)
+    # Symptom weights step (max +28)
     symptom_score = max(
         (SYMPTOM_WEIGHTS.get(s.value, 0) for s in vitals.symptoms),
         default=0,
     )
-    score += symptom_score
+    score += min(28, symptom_score)
 
+    # 2. Continuous fine-grained vital tie-breakers (max ~10-15 points)
+    # Adds a tiny unique fraction for every patient based on exact vitals
+    hr_tb = abs(hr - 80) * 0.05
+    bp_tb = abs(sbp - 120) * 0.03 + abs(vitals.diastolic_bp - 80) * 0.02
+    o2_tb = (100.0 - spo2) * 0.25
+    temp_tb = abs(vitals.temperature - 37.0) * 0.5
+    
+    score += (hr_tb + bp_tb + o2_tb + temp_tb)
+
+    # Hard cap at 100.0
     score = min(100.0, max(0.0, score))
 
-    if score >= 85:
+    # 3. Derive Severity from widely-distributed score
+    if score >= 70.0:
         severity = Severity.CRITICAL
-    elif score >= 65:
+    elif score >= 45.0:
         severity = Severity.HIGH
-    elif score >= 40:
+    elif score >= 25.0:
         severity = Severity.MEDIUM
     else:
         severity = Severity.LOW
