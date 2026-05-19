@@ -1,186 +1,151 @@
-# Hospital Triage System
+<div align="center">
+  <h1>🏥 PriorityPulse</h1>
+  <p><strong>A Modern Hospital Triage & OS Scheduling Simulator</strong></p>
 
-> **Stack:** Python 3.11 · FastAPI · React (Vite + Tailwind) · JSON flat-file storage  
-> **Team size:** 3 developers  
-> **Features:** Priority Scheduling · Round Robin · Selection Sort · Merge Sort · Aging · WebSocket live updates
+  <p>
+    <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+    <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind" />
+    <img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E" alt="Vite" />
+  </p>
 
----
-
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Feature List](#feature-list)
-3. [System Architecture](#system-architecture)
-4. [Quick Start](#quick-start)
-5. [API Reference](#api-reference)
-6. [Developer Setup](#developer-setup)
-7. [Documentation](#documentation)
-8. [Team](#team)
+  <p>
+    <em>A sophisticated simulation bridging the gap between Operating Systems algorithms and Emergency Room triage systems.</em>
+  </p>
+</div>
 
 ---
 
-## Project Overview
+## ✨ Overview
 
-The **Hospital Triage System** is a simulation application that models an Emergency Room (ER) queue using core concepts from:
+**PriorityPulse** is a dynamic simulation application that models an Emergency Room (ER) queue. It uniquely applies core concepts from **Operating Systems (OS)** and **Design and Analysis of Algorithms (DAA)** to solve real-world patient prioritization. 
 
-- **Design and Analysis of Algorithms (DAA):** Selection Sort (O(n²)) for small queues, Merge Sort (O(n log n)) for large queues, with live complexity comparison
-- **Operating Systems (OS):** Patients modelled as processes with PID, burst time, and priority; scheduled using Preemptive Priority Scheduling and Round Robin (quantum = 5 min)
-
-Patients arrive with vitals (heart rate, blood pressure, oxygen saturation, symptoms). A triage score (0–100) is calculated automatically. The queue is continuously re-sorted so the most critical patient is always treated next.
-
-**Bonus features:** An aging mechanism prevents low-priority patient starvation, and new patients can be added mid-simulation via API or the frontend form.
+Patients arrive with vital signs (heart rate, blood pressure, oxygen saturation, symptoms), and a triage score is automatically calculated. The queue is continuously re-sorted and scheduled to ensure the most critical patients receive immediate care.
 
 ---
 
-## Feature List
+## 🚀 Key Features
 
-### Core (Required by Assignment)
+### 🧮 Algorithmic Intelligence
+- **Dynamic Sorting:** Uses **Selection Sort (O(n²))** for small queues (≤ 10) and **Merge Sort (O(n log n))** for larger queues, optimizing performance based on load.
+- **Complexity Analysis:** Live Big-O analysis and runtime comparison between sorting algorithms.
 
-| # | Feature |
-|---|---------|
-| F01 | Priority score from vitals (HR, BP, SpO2, symptoms) |
-| F02 | Selection Sort for ≤ 10 patients |
-| F03 | Merge Sort for > 10 patients |
-| F04 | Time complexity analysis (Big-O + runtime comparison) |
-| F05 | Patient modelled as OS Process (PID, AT, BT, priority) |
-| F06 | Preemptive Priority Scheduling |
-| F07 | Round Robin Scheduling (quantum = 5 min) |
-| F08 | Gantt chart data output (per doctor lane) |
-| F09–F10 | Waiting time and turnaround time per patient |
-| F11 | 15 sample patients with varied vitals |
-| F12 | REST API via FastAPI |
-| F13 | Live queue view (waiting / treating / done) |
-| F14 | Interactive Gantt chart (per doctor lane) |
-| F15 | Algorithm comparison panel |
-| F16 | Complexity analysis panel (Big-O chart) |
+### ⚙️ Operating System Concepts
+- **Process Modeling:** Patients are modeled as OS processes with `PID`, `Arrival Time (AT)`, `Burst Time (BT)`, and `Priority`.
+- **Preemptive Priority Scheduling:** The most critical patient is always treated next.
+- **Round Robin:** Time-slicing (quantum = 5 min) ensures fair doctor time distribution.
+- **Aging Mechanism (Bonus):** Prevents starvation by boosting priority for low-priority patients waiting over 15 minutes.
 
-### Bonus Features
-
-| # | Feature |
-|---|---------|
-| B01 | Aging mechanism (priority bumped after 15 min wait) |
-| B02 | Dynamic patient arrival mid-simulation |
-| B03 | Real-time WebSocket queue push on new arrival |
-| B04 | Live arrival animation in frontend |
+### 💻 Interactive Dashboard
+- **Live Queue:** Real-time visualization of waiting, treating, and completed patients.
+- **Gantt Charts:** Interactive, per-doctor scheduling visualization.
+- **Dynamic Influx:** Add new patients mid-simulation with live WebSocket updates and arrival animations.
 
 ---
 
-## System Architecture
+## 🏗️ Architecture
 
-```
-┌───────────────────────────────────────────────────────┐
-│               React Frontend (Vite + Tailwind)        │
-│  QueuePanel  │  GanttChart  │  AlgoComparison         │
-│              │              │  ComplexityPanel        │
-│         API Client (axios) + WebSocket                │
-└───────────────────┬───────────────────────────────────┘
-                    │ HTTP + WS  (localhost:8000)
-┌───────────────────▼───────────────────────────────────┐
-│                  FastAPI Backend                      │
-│  /patients  /simulation  /algorithms  /ws             │
-│                                                       │
-│  triage.py  sorting.py  scheduler.py  aging.py        │
-│                                                       │
-│  data/ → patients.json  simulation_state.json         │
-│          seed_patients.json (15 patients, committed)  │
-└───────────────────────────────────────────────────────┘
+PriorityPulse uses a modern, decoupled architecture communicating via HTTP and WebSockets.
+
+```mermaid
+graph TD
+    subgraph Frontend [React Frontend]
+        UI[Vite + Tailwind CSS]
+        Components[QueuePanel, GanttChart, AlgoComparison]
+        Client[Axios + WebSocket Client]
+    end
+
+    subgraph Backend [FastAPI Backend]
+        API[REST API: /patients, /simulation, /algorithms]
+        WS[WebSocket: /ws]
+        Engine[triage.py, sorting.py, scheduler.py]
+    end
+
+    subgraph Storage [Flat-File Storage]
+        DB[(JSON Files)]
+    end
+
+    UI --> Components
+    Components --> Client
+    Client -- HTTP/WS --> API
+    Client -- WS --> WS
+    API --> Engine
+    WS --> Engine
+    Engine <--> DB
 ```
 
 ---
 
-## Quick Start
+## 🛠️ Quick Start
 
-> Requires: Python 3.11, Node.js 18+
+> **Prerequisites:** Python 3.11+, Node.js 18+
 
-### Terminal 1 — Backend
-
+### 1️⃣ Start the Backend
 ```bash
-cd hospital-triage/backend
+cd backend
 
-# macOS/Linux
-python3.11 -m venv venv && source venv/bin/activate
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Windows
-python -m venv venv && venv\Scripts\activate
-
+# Install dependencies and run
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
+*API running at [http://localhost:8000](http://localhost:8000)* | *Swagger UI at [http://localhost:8000/docs](http://localhost:8000/docs)*
 
-Backend runs at: **http://localhost:8000**  
-API docs (Swagger): **http://localhost:8000/docs**
-
-### Terminal 2 — Frontend
-
+### 2️⃣ Start the Frontend
 ```bash
-cd hospital-triage/frontend
+cd frontend
+
+# Install dependencies and run
 npm install
 npm run dev
 ```
-
-Open browser: **http://localhost:5173**
+*App running at [http://localhost:5173](http://localhost:5173)*
 
 ---
 
-## API Reference
+## 🔌 API Reference
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+| :--- | :--- | :--- |
 | `GET` | `/patients` | List all patients with computed scores |
-| `POST` | `/patients` | Add a new patient (computes score automatically) |
-| `GET` | `/simulation/state` | Current clock, queue, Gantt, stats |
+| `POST` | `/patients` | Add a new patient |
+| `GET` | `/simulation/state` | Current clock, queue, Gantt, and stats |
 | `POST` | `/simulation/start` | Begin simulation |
 | `POST` | `/simulation/pause` | Pause at current tick |
 | `POST` | `/simulation/step` | Advance one tick |
 | `POST` | `/simulation/reset` | Reset to initial state |
-| `POST` | `/algorithms/compare` | Run both sorts on given patients, return timing + steps |
-| `WS` | `/ws/simulation` | Real-time simulation state broadcast (per tick) |
-
-Full API documentation available at `http://localhost:8000/docs` (Swagger UI) when the backend is running.
+| `POST` | `/algorithms/compare` | Run algorithm comparisons |
+| `WS` | `/ws/simulation` | Real-time state broadcast |
 
 ---
 
-## Developer Setup
+## ⚙️ Configuration
 
-### Prerequisites
-
-| Tool | Version | Check |
-|------|---------|-------|
-| Python | 3.11.x | `python --version` |
-| Node.js | 18+ | `node --version` |
-| npm | 9+ | `npm --version` |
-
-### Environment Variables
-
-No `.env` file required. All config lives in `backend/config.py`:
+No `.env` file is required. Core settings are adjustable in `backend/config.py`:
 
 ```python
-ROUND_ROBIN_QUANTUM = 5          # minutes per time slice
-AGING_THRESHOLD_MINUTES = 15     # wait before priority bump
-AGING_BOOST = 10                 # points added per threshold exceeded
-NUM_DOCTORS = 1                  # default doctor count (1–5)
-SORT_LARGE_THRESHOLD = 10        # use MergeSort above this count
-```
-
-### Linting Docs
-
-```bash
-npm install -g markdownlint-cli
-markdownlint docs/
+ROUND_ROBIN_QUANTUM = 5          # Minutes per time slice
+AGING_THRESHOLD_MINUTES = 15     # Wait time before priority bump
+AGING_BOOST = 10                 # Points added per threshold exceeded
+NUM_DOCTORS = 1                  # Default doctor count (1–5)
+SORT_LARGE_THRESHOLD = 10        # Threshold to switch to Merge Sort
 ```
 
 ---
 
-## Documentation
+## 📚 Documentation
 
-All technical documentation is in the `docs/` directory:
+Deep dive into the academic concepts and technical implementation:
 
-| File | Contents |
-|------|----------|
-| [`docs/DAA_analysis.md`](docs/DAA_analysis.md) | Selection Sort and Merge Sort — derivations, proofs, comparison table, triage rationale |
-| [`docs/OS_concepts.md`](docs/OS_concepts.md) | Process model, Priority Scheduling, Round Robin, metrics, worked example with 5 patients |
-| [`docs/demo_walkthrough.md`](docs/demo_walkthrough.md) | Step-by-step run guide, expected UI states, curl examples, troubleshooting |
+- 📘 [**DAA Analysis**](docs/DAA_analysis.md): Selection Sort vs Merge Sort derivations, proofs, and triage rationale.
+- 📙 [**OS Concepts**](docs/OS_concepts.md): Process modeling, scheduling algorithms, metrics, and a 5-patient worked example.
+- 📗 [**Demo Walkthrough**](docs/demo_walkthrough.md): Step-by-step run guide, expected UI states, and troubleshooting.
 
 ---
-
-*Built as part of a DAA + OS academic project. No external APIs or paid services required.*
+<div align="center">
+  <i>Built with ❤️ as part of a DAA + OS academic project.</i>
+</div>

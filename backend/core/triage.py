@@ -24,11 +24,12 @@ SYMPTOM_WEIGHTS = {
 }
 
 
-def calculate_priority(vitals) -> tuple[float, str]:
+def calculate_priority(vitals, age: int = 30) -> tuple[float, str]:
     """
     Returns (priority_score, severity_label).
     Formula recalibrated to lower base score (15.0) and uses fine-grained vital tie-breakers
     to ensure wide distribution and unique priority scores for patients.
+    Includes age and temperature stepwise risk adjustments.
     """
     score = 15.0
 
@@ -61,9 +62,20 @@ def calculate_priority(vitals) -> tuple[float, str]:
     elif spo2 < 95:
         score += 8
 
+    # Temperature step (max +10)
+    temp = vitals.temperature
+    if temp > 39.0 or temp < 35.0:
+        score += 10
+    elif temp > 38.0 or temp < 36.0:
+        score += 5
+
+    # Age risk step (max +8)
+    if age >= 65 or age <= 5:
+        score += 8
+
     # Symptom weights step (max +28)
     symptom_score = max(
-        (SYMPTOM_WEIGHTS.get(s.value, 0) for s in vitals.symptoms),
+        (SYMPTOM_WEIGHTS.get(s.value if hasattr(s, "value") else s, 0) for s in vitals.symptoms),
         default=0,
     )
     score += min(28, symptom_score)
@@ -73,9 +85,10 @@ def calculate_priority(vitals) -> tuple[float, str]:
     hr_tb = abs(hr - 80) * 0.05
     bp_tb = abs(sbp - 120) * 0.03 + abs(vitals.diastolic_bp - 80) * 0.02
     o2_tb = (100.0 - spo2) * 0.25
-    temp_tb = abs(vitals.temperature - 37.0) * 0.5
+    temp_tb = abs(temp - 37.0) * 0.5
+    age_tb = (age * 0.02) if age > 50 else ((5 - age) * 0.1 if age < 5 else 0)
     
-    score += (hr_tb + bp_tb + o2_tb + temp_tb)
+    score += (hr_tb + bp_tb + o2_tb + temp_tb + age_tb)
 
     # Hard cap at 100.0
     score = min(100.0, max(0.0, score))

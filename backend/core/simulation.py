@@ -67,7 +67,7 @@ class SimulationEngine:
             self._pid_counter = 0
             for data in saved:
                 vitals = PatientVitals(**data["vitals"])
-                score, severity = calculate_priority(vitals)
+                score, severity = calculate_priority(vitals, age=data.get("age", 30))
                 p = Patient(
                     patient_id=data["patient_id"],
                     name=data["name"],
@@ -98,7 +98,7 @@ class SimulationEngine:
         self._pid_counter = 0
         for data in seed:
             vitals = PatientVitals(**data["vitals"])
-            score, severity = calculate_priority(vitals)
+            score, severity = calculate_priority(vitals, age=data.get("age", 30))
             self._pid_counter += 1
             p = Patient(
                 patient_id=data["patient_id"],
@@ -118,7 +118,7 @@ class SimulationEngine:
 
     def add_patient(self, patient: Patient) -> Patient:
         """Add a patient dynamically (B02). Auto-computes priority."""
-        score, severity = calculate_priority(patient.vitals)
+        score, severity = calculate_priority(patient.vitals, age=patient.age)
         patient.priority_score = score
         patient.severity = severity
         self._pid_counter += 1
@@ -326,7 +326,9 @@ class SimulationEngine:
                         last_entry = entry
                         break
                         
-                if last_entry and last_entry.patient_id == current_pid and last_entry.end == self.clock:
+                is_new_quantum = (self.scheduler_type == "round_robin" and self._rr_used.get(doc_id, 0) == 0)
+                
+                if last_entry and last_entry.patient_id == current_pid and last_entry.end == self.clock and not is_new_quantum:
                     last_entry.end = self.clock + 1
                 else:
                     self.gantt.append(GanttEntry(
